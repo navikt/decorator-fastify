@@ -10,6 +10,16 @@ export const nb = {
     did_you_find: "Fant du det du lette etter?",
     search: "Søk",
     search_nav_no: "Søk på nav.no",
+    consent_banner_title: "Informasjonskapsler (cookies) på nav.no",
+    consent_banner_text: `
+    <p>
+        Vi har informasjonskapsler som samler informasjon om hvordan sidene våre brukes. Informasjonen bruker vi til å forbedre sidene slik at de fungerer best mulig.
+        <a href="https://www.ansatt.dev.nav.no/informasjonskapsler">Les om informasjonskapsler</a>.
+    </p>
+    `,
+    consent_banner_consent_all: "Godkjenn alle",
+    consent_banner_refuse_optional: "Bare nødvendige",
+    consent_banner_configure: "Tilpass",
     clear: "Tøm",
     login: "Logg inn",
     logout: "Logg ut",
@@ -111,6 +121,16 @@ const en: Texts = {
     share_screen: "Share screen with your counsellor",
     to_top: "To the top",
     menu: "Menu",
+    consent_banner_title: "Cookies on nav.no",
+    consent_banner_text: `
+    <p>
+        We use cookies that collect information about how our pages are used. We use this information to improve the overall user experience on nav.no.
+        <a href="https://www.ansatt.dev.nav.no/informasjonskapsler">Read about cookies</a>.
+    </p>
+    `,
+    consent_banner_consent_all: "Consent to all",
+    consent_banner_refuse_optional: "Necessary only",
+    consent_banner_configure: "Configure",
     close: "Close",
     did_you_find: "Did you find what you were looking for?",
     search: "Search",

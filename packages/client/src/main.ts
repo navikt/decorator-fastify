@@ -7,6 +7,7 @@ import { refreshAuthData } from "./helpers/auth";
 import { buildHtmlElement } from "./helpers/html-element-builder";
 import { param, initParams } from "./params";
 import "./main.css";
+import { WebStorageController } from "./webStorage";
 
 import.meta.glob("./styles/*.css", { eager: true });
 import.meta.glob(["./views/**/*.ts", "!./views/**/*.test.ts"], { eager: true });
@@ -14,6 +15,8 @@ import.meta.glob(["./views/**/*.ts", "!./views/**/*.test.ts"], { eager: true });
 window.addEventListener("load", () => {
     addFaroMetaData();
 });
+
+window.webStorageController = new WebStorageController();
 
 const injectHeadAssets = () => {
     window.__DECORATOR_DATA__.headAssets?.forEach((props) => {
@@ -31,19 +34,49 @@ const injectHeadAssets = () => {
     });
 };
 
-const init = () => {
-    initParams();
-    injectHeadAssets();
-    initHistoryEvents();
-    initScrollToEvents();
-
+const startTrackingServices = () => {
+    console.log("Starting tracking services");
     if (param("maskHotjar")) {
         document.documentElement.setAttribute("data-hj-suppress", "");
+    }
+
+    if (typeof window.initConditionalHotjar === "function") {
+        window.initConditionalHotjar();
     }
 
     refreshAuthData().then((response) => {
         initAnalytics(response.auth);
     });
+};
+
+const stopTrackingServices = () => {
+    console.log("Stopping tracking services");
+    window.location.reload();
+};
+
+/* Triggers if the user has been presented with the
+ * consent banner and gives consent */
+const initConsentListener = () => {
+    window.addEventListener("consentAllWebStorage", () => {
+        startTrackingServices();
+    });
+    window.addEventListener("refuseOptionalWebStorage", () => {
+        stopTrackingServices();
+    });
+};
+
+const init = () => {
+    initParams();
+    injectHeadAssets();
+    initHistoryEvents();
+    initScrollToEvents();
+    initConsentListener();
+
+    const { consent } = window.webStorageController.getCurrentConsent();
+
+    if (consent?.analytics) {
+        startTrackingServices();
+    }
 };
 
 if (document.readyState === "loading") {
